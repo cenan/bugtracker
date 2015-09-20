@@ -1,0 +1,30 @@
+{% extends 'git/layout.html' %}
+
+{% block git_content %}
+
+<table id="filelist">
+	<thead>
+		<tr>
+			<th class="nosort" style="width: 12px">&nbsp;</th>
+			<th>Filename</th>
+			<th>Age</th>
+			<th>Message</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for f in files %}
+		<tr>
+			{% if f.access_code == '40000' %}
+			<td><img src="/static/img/folder.png" /></td>
+			{% else %}
+			<td>&nbsp;</td>
+			{% endif %}
+			<td><a href="/project/{{ project_id }}/source/browse{{ f.path }}{% if rev %}?rev={{ rev }}{% endif %}">{{ f.filename }}</a></td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div class="issue column grid_12" data-project-id="{{ project_id }}"> 
+	<ul class="priority_info priority{{ issue.priority }}">
+		<li><span class="p_label">ISSUE #</span><br /><span class="p_wlabel">{{ issue.id }}</span></li>
+		<li><span class="p_label">STATUS</span><br /><span class="p_wlabel">{{ issue.status | status_string }}</span></li>
+		<li><span class="p_label">PRIORITY</span><br /><span class="p_wlabel">{{ issue.priority | priority_string }}</span></li>
+		<li><span class="p_label">MILESTONE</span><br /><span class="p_wlabel">{{ issue.milestone_name }}</span></li>
+		<li><span class="p_label">CATEGORY</span><br /><span class="p_wlabel">{{ issue.category.category_name }}</span></li>
+		<li><span class="p_label">OPENED BY</span><br /><span class="p_wlabel">{{ issue.opener.username }}</span></li>
+		<li><span class="p_label">ASSIGNEE</span><br /><span class="p_wlabel">{{ issue.assignee.username | default('-') }}</span></li>
+	</ul>
+	<h3 id="issue_title">{{ issue.title }}</h3>
+	<div id="issue_content">
+		<p>{{ issue.content | markdown }}</p>
+	</div>
+	{% for attachment in issue.attachments %}
+		<a href="/static/upload/{{ attachment.filename }}" target="_balnk"><img src="/static/upload/{{ attachment.filename }}" width="64" height="64" /></a><br />
+	{% endfor %}
+	{% if session.user_id == issue.opener.id %}
+		<span class="edit_issue buttony" data-issue_id="{{ issue.id }}"><img src="/static/img/bug_edit.png" /> Edit issue</span>
+	{% endif %}
+	<a class="buttony" href="/project/{{ project_id }}/delete-issue/{{ issue.id }}"><img src="/static/img/bug_delete.png" /> Delete issue</a><br />
+	<br />
+	{% for update in updates %}
+		<div class="issue_update">
+		{{ update.username }} <span class="small_info">on {{ update.create_date }}</span>
+		{% if update.content %}
+			{{ update.content | markdown }}
+		{% endif %}
+		{% if update.old_category != update.new_category %}
+		<br />
+		<span class="small_info">changed category from
+			<span class="info">{{ update['category_name'] }}</span>
+			to
+			<span class="info">{{ update['category_name:1'] }}</span>
+		</span>
+		{% endif %}
+		{% if update.old_assignee != update.new_assignee %}
+		<br />
+		<span class="small_info">changed assignee from
+			<span class="info">{{ update.old_assignee }}</span>
+			to
+			<span class="info">{{ update.new_assignee }}</span>
+		</span>
+		{% endif %}
+		{% if update.old_priority != update.new_priority %}
+		<br />
+		<span class="small_info">changed priority from
+			<span class="info">{{ update.old_priority | priority_string }}</span>
+			to
+			<span class="info">{{ update.new_priority | priority_string }}</span>
+		</span>
+		{% endif %}
+		{% if update.old_status != update.new_status %}
+		<br />
+		<span class="small_info">changed status from
+			<span class="info">{{ update.old_status | status_string }}</span>
+			to
+			<span class="info">{{ update.new_status | status_string }}</span>
+		{% endif %}
+		{% if update.old_milestone != update.new_milestone %}
+		<br />
+		<span class="small_info">changed milestone from
+			<span class="info">{{ update.milestone_name }}</span>
+			to
+			<span class="info">{{ update['milestone_name:1'] }}</span>
+		</span>
+		{% endif %}
+		</div>
+	{% endfor %}
+	</div>
+
+</div>
+<div class="row update_issue">
+
+	<div class="column grid_12">	
+	<span id="show_update_pane">Update Issue</span>
+	<form action="/project/{{ project_id }}/update-issue" method="post">
+		<fieldset>
+			<textarea id="content" name="content" placeholder="description" rows="2" cols="40"></textarea><br />
+			<input type="hidden" id="issue_id" name="issue_id" value="{{ issue.id }}" />
+			<select id="category" name="category">
+				<option value="{{ issue.category_id }}">Change category</option>
+				{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.category_name }}</option>
+				{% endfor %}
+			</select>
+			<select id="assignee" name="assignee">
+				<option value="{{ issue.assignee_id }}">Assignee</option>
+				{% for user in users %}
+				<option value="{{ user.id }}">{{ user.username }}</option>
+				{% endfor %}
+			</select>
+			<select id="status" name="status">
+				<option value="{{ issue.status }}">Change status</option>
+				<option value="0">{{ 0 | status_string }}</option>
+				<option value="1">{{ 1 | status_string }}</option>
+			</select>
+			<select id="priority" name="priority">
+				<option value="{{ issue.priority }}">Change Priority</option>
+				<option value="1" class="p1">{{ 1 | priority_string }}</option>
+				<option value="2" class="p2">{{ 2 | priority_string }}</option>
+				<option value="3" class="p3">{{ 3 | priority_string }}</option>
+				<option value="4" class="p4">{{ 4 | priority_string }}</option>
+			</select>
+			<select id="milestone" name="milestone">
+				<option value="{{ issue.milestone_id }}">Change milestone</option>
+				{% for milestone in milestones %}
+				<option value="{{ milestone.id }}">{{ milestone.milestone_name }}</option>
+				{% endfor %}
+			</select><br />
+			<input type="submit" value="Update Issue" />
+		</fieldset>
+	</form>
+	</div>
+	
+{% endblock %}
+
+

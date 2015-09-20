@@ -1,0 +1,80 @@
+table {
+	border-collapse: collapse;
+}
+
+td {
+	border:1px solid #aaa;
+	padding: 3px;
+}
+
+tr {
+	background-color: #fff;
+}
+tr.odd {
+	background-color: #ddd;
+}
+
+th {
+	padding: 3px;
+	padding-right: 16px;
+	background-image:url(../img/bg.gif);
+	background-repeat:no-repeat;
+	background-position:center right;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+th:hover,th.over {
+	background-color: #ddd;
+}
+
+th.nosort:hover {
+	background-color: transparent;
+}
+
+th.sortasc {
+	background-image:url(../img/asc.gif);
+}
+
+th.sortdesc {
+	background-image:url(../img/desc.gif);
+}
+
+th.sortasc,
+th.sortdesc {
+	background-color: #8fbcd9;
+}
+
+th.nosort {
+	background-image:none;
+	cursor: default;
+}
+
+.pagenumber {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	padding: 2px;
+	background-color: #8fbcd9;
+	margin-right: 3px;
+	cursor: pointer;
+	width: 14px;
+	text-align: center;
+}
+
+.activepagenumber {
+	font-weight: bold;
+}
+
+#inplacechar {
+	border: 1px solid #666;
+}
+
+#tablefilter {
+	border: 1px solid #666;
+}
+

@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div id="source_view_header">
+	<a href="/project/{{ project_id }}/source/browse/{% if rev %}?rev={{ rev }}{% endif %}">$PROJECT_NAME$</a>
+	{% for b in breadcrumb %}
+		/ <a href="/project/{{ project_id }}/source/browse{{ b.path }}{% if rev %}?rev={{ rev }}{% endif %}">{{ b.name }}</a>
+	{% endfor %}
+	<div id="revs">
+	Revisions:
+	<select id="version_history">
+	{% for h in history %}
+		<option value="{{h}}"{% if rev == h %} selected="selected"{% endif %}>{{ h|truncate(12,true) }}</option>
+	{% endfor %}
+	</select>
+	</div>
+	</div>
+	{% block git_content %}
+	{% endblock %}
+{% endblock %}

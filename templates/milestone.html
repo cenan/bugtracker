@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="new_issue column grid_12">
+<form action="/project/{{ project_id }}/edit-milestone/{{ milestone.id }}" method="post">
+	<fieldset>
+		<input id="milestone_name" name="milestone_name" type="text" placeholder="Milestone name" value="{{ milestone.milestone_name }}" /><br />
+		<select name="milestone_status">
+			<option value="{{ milestone.milestone_status }}">Change status</option>
+			<option value="0">Open</option>
+			<option value="1">Closed</option>
+		</select><br />
+		<input type="submit" value="Update milestone" />
+	</fieldset>
+</form>
+</div>
+{% endblock %}
+
+

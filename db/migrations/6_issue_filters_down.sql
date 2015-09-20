@@ -1,0 +1,8 @@
+BEGIN TRANSACTION;
+
+DROP TABLE issue_filter;
+
+COMMIT;
+
+
+

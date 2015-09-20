@@ -1,0 +1,6 @@
+BEGIN TRANSACTION;
+
+ALTER TABLE project DROP COLUMN git_repo_path;
+
+COMMIT;
+

@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="new_issue column grid_12">
+<form action="/project/{{ project_id }}/new-issue" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<input id="title" name="title" type="text" placeholder="Title" /><br />
+		<textarea id="content" name="content" placeholder="Detailed description of the issue" rows="8" cols="50"></textarea><br />
+		<input id="userfile" name="userfile" type="file" multiple="multiple" /><br />
+		<select id="category" name="category">
+			<option value="0">Category</option>
+			{% for category in categories %}
+			<option value="{{ category.id }}" data-default_assignee="{{ category.default_assignee_id }}">{{ category.category_name }}</option>
+			{% endfor %}
+		</select><br />
+		<select id="assignee" name="assignee">
+			<option value="0">Assignee</option>
+			{% for user in users %}
+			<option value="{{ user.id }}">{{ user.username }}</option>
+			{% endfor %}
+		</select><br />
+		<select id="priority" name="priority">
+			<option value="0">Priority</option>
+			<option value="1" class="p1">{{ 1 | priority_string }}</option>
+			<option value="2" class="p2">{{ 2 | priority_string }}</option>
+			<option value="3" class="p3">{{ 3 | priority_string }}</option>
+			<option value="4" class="p4">{{ 4 | priority_string }}</option>
+		</select><br />
+		<select id="milestone" name="milestone">
+			<option value="0">Milestone</option>
+			{% for milestone in milestones %}
+			<option value="{{ milestone.id }}">{{ milestone.milestone_name }}</option>
+			{% endfor %}
+		</select><br />
+		<input type="submit" value="Create Issue" />
+	</fieldset>
+</form>
+</div>
+{% endblock %}
+

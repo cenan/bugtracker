@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div class="column grid_9 issue_list">
+	<div id="filter-bar">
+		<span>Filter issues by:</span>
+		<ul>
+			<li>
+				Category
+				<div class="filter-dropdown">
+				{% for cat in categories %}
+				<input id="cat_{{ cat.id }}"
+					   data-category-id="{{ cat.id }}"
+					   name="category"
+					   type="checkbox" {% if cat.id | string in selected_categories %}checked="checked"{% endif %} />
+					<label for="cat_{{ cat.id }}">{{ cat.category_name }}</label>
+					<a class="small_info" href="/project/{{ project_id }}/edit-category/{{ cat.id }}">(edit)</a><br />
+				{% endfor %}
+				</div>
+			</li>
+			<li>
+				Milestone
+				<div class="filter-dropdown">
+				{% for mil in milestones %}
+				<div {% if mil.milestone_status == 1 %}class="closed_milestone"{% endif %}>
+					<input id="mil_{{ mil.id }}"
+						   data-milestone-id="{{ mil.id }}"
+						   name="milestone"
+						   type="checkbox"{% if mil.id | string in selected_milestones %} checked="checked"{% endif %} />
+					<label for="mil_{{ mil.id }}">{{ mil.milestone_name }}</label>
+					<a class="small_info" href="/project/{{ project_id }}/edit-milestone/{{ mil.id }}">(edit)</a>
+				</div>
+				{% endfor %}
+				</div>
+			</li>
+			<li>
+				Status
+				<div class="filter-dropdown">
+					<input id="status_all" name="status" value="-1" type="checkbox"{% if status == -1 %} checked="checked"{% endif %} />
+					<label for="status_all">Show all</label><br />
+					<input id="status_open" name="status" value="0" type="checkbox"{% if status == '0' %} checked="checked"{% endif %} />
+					<label for="status_open">Open</label><br />
+					<input id="status_close" name="status" value="1" type="checkbox"{% if status == '1' %} checked="checked"{% endif %} />
+					<label for="status_close">Closed</label>
+				</div>
+			</li>
+		</ul>
+		<span id="save-filter" class="buttony"><img src="/static/img/disk.png" /> Save filter</span>
+	</div>
+
+	<div id="issues_summary">
+		{{ issue_count }} issues
+	</div>
+	{% for issue in issues %}
+		<div class="list_item_issue priority{{ issue.priority }}">
+			<span class="issue_number{% if issue.status == 1 %} closed_issue{% endif %}" title="{{ issue.status | status_string }}">#{{ issue.id }}</span>
+			<a href="/project/{{ project_id }}/issue/{{ issue.id }}">{{ issue.title }}</a>
+			<span>({{ issue.opener_name }} - {{ issue.create_date | timesince }})</span>
+		</div>
+	{% endfor %}
+	{% if page_count > 1 %}
+		<div id="issue_pager">
+		{% for i in range(1, page_count + 1) %}
+			<a href="/project/{{ project_id }}/issues?p={{ i }}{{ qs }}"{% if i | string == current_page %} class="current_page"{% endif %}>{{ i }}</a>
+		{% endfor %}
+		{% if current_page|int < page_count|int %}
+			<a href="/project/{{ project_id }}/issues?p={{ current_page|int +1 }}{{ qs }}">&gt;</a>
+		{% endif %}
+		</div>
+	{% endif %}
+	</div>
+	<div id="sidebarw" class="column grid_3">
+	<div id="sidebar">
+		<a href="/project/{{ project_id }}/new-issue"><img src="/static/img/add.png" /> Create New Issue</a><br />
+		<br />
+		<a href="/project/{{ project_id }}/new-category"><img src="/static/img/add.png" /> Add New Category</a><br />
+		<br />
+		<a href="/project/{{ project_id }}/new-milestone"><img src="/static/img/add.png" /> Add New Milestone</a>
+	</div>
+	</div>
+{% endblock %}
+

@@ -1,0 +1,6 @@
+env
+config.pyc
+bugtrack.zip
+*.pyc
+db/sqlite/test.db
+static/upload/

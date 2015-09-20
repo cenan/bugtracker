@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="new_issue column grid_12">
+<form action="/project/{{ project_id }}/new-milestone" method="post">
+	<fieldset>
+		<input id="milestone_name" name="milestone_name" type="text" placeholder="Milestone name" /><br />
+		<input type="submit" value="Create Milestone" />
+	</fieldset>
+</form>
+</div>
+{% endblock %}
+
+

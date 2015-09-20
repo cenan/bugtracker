@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block nav %}
+	<ul id="nav">
+		<li><a href="/projects">Projects</a></li>
+	</ul>
+{% endblock %}
+
+{% block content %}
+	<div class="column grid_9 issue_list">
+	{% for project in projects %}
+		<div class="list_item_issue">
+			<h3><a href="/project/{{ project.id  }}/issues">{{ project.project_name }}</a> <a href="/delete-project/{{ project.id }}">delete</a></h3>
+		</div>
+	{% endfor %}
+	</div>
+	<div id="sidebarw" class="column grid_3">
+		<div id="sidebar">
+			<a href="/new-project">Create New Project</a>
+		</div>
+	</div>
+{% endblock %}
+
+

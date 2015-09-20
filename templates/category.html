@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="new_issue column grid_12">
+<form action="/project/{{ project_id }}/edit-category/{{ category.id }}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<input id="category_name" name="category_name" type="text" placeholder="Category name" value="{{ category.category_name }}" /><br />
+		<select id="default_assignee" name="default_assignee">
+			<option value="{{ category.default_assignee_id }}">Assignee</option>
+			{% for user in users %}
+			<option value="{{ user.id }}"{% if category.default_assignee_id == user.id %} selected="selected"{% endif %}>{{ user.username }}</option>
+			{% endfor %}
+		</select><br />
+		<input type="submit" value="Update category" />
+	</fieldset>
+</form>
+</div>
+{% endblock %}
+

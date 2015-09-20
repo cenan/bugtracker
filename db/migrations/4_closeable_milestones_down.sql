@@ -1,0 +1,6 @@
+BEGIN TRANSACTION;
+
+ALTER TABLE milestone DROP COLUMN milestone_status;
+
+COMMIT;
+

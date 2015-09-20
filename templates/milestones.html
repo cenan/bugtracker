@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div class="column grid_9 issue_list">
+	{% for milestone in milestones %}
+		<div class="list_item_issue">
+			<h3>{{ milestone.milestone_name }} <a href="/project/{{ project_id }}/delete-milestone/{{ milestone.id }}">delete</a></h3>
+		</div>
+	{% endfor %}
+	</div>
+	<div id="sidebarw" class="column grid_3">
+		<div id="sidebar">
+			<a href="/project/{{ project_id }}/new-milestone">Create New Milestone</a>
+		</div>
+	</div>
+{% endblock %}
+
